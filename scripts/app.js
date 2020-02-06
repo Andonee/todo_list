@@ -44,9 +44,9 @@ function addNewElementToList(title   /* Title, author, id */) {
   const newElement = createElement(title);
 
   newElement.innerHTML = `<span class="buttons_container">
-  <button class='remove'>Remove</button>
-  <button class='edit'>Edit</button>
-  <button class="done_button">Done</button>
+  <button class='remove_btn'>Remove</button>
+  <button class='edit_btn'>Edit</button>
+  <button class="done_btn">Done</button>
   </span>${title}`
 
   $list.appendChild(newElement);
@@ -77,15 +77,24 @@ function listClickManager(event) {
   // Rozstrzygnięcie co dokładnie zostało kliknięte i wywołanie odpowiedniej funkcji
   // event.target.parentElement.id
   // if (event.target.className === 'edit') { editListElement(id) }
-  if(event.target.className === 'edit'){
+  if(event.target.className === 'done_btn'){
     console.log(event.target.parentElement.parentElement.id)
-  }else if (event.target.className === 'remove'){
+    list_element = event.target.parentElement.parentElement
+    edit_el = document.getElementById(event.target.parentElement.parentElement.id)
+    edit_el.classList.toggle('done')
+  }else if (event.target.className === 'remove_btn'){
     // console.log(event.target.parentElement.parentElement.id)
     // console.log(initialList.pop(event.target.parentElement.parentElement.id))
     // console.log(initialList)
     remove_el = document.getElementById(event.target.parentElement.parentElement.id)
-    console.log(remove_el)
     $list.removeChild(remove_el)
+  }else if(event.target.className === 'edit_btn'){
+    edit_el = document.getElementById(event.target.parentElement.parentElement.id)
+    modal = document.getElementById('modalId')
+    modal.classList.remove('modal')
+    modal.classList.add('modal-content')
+
+    console.log(modal_input)
   }
 }
 

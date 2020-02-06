@@ -48,14 +48,16 @@ html {
 }
 .new_element_form {
   display: flex;
+  width: 80%;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  justify-content: center;
 }
 
 .new_element_form__input {
-  width: 60rem;
+  width: 80%;
   padding: 1rem;
   color: rgb(201, 48, 27);
   font-weight: 900;
@@ -72,6 +74,7 @@ html {
 
 .add_button {
   width: 12rem;
+  padding: 1rem;
   font-weight: 900;
   color: rgb(201, 48, 27);
   background-color: #fff;
@@ -164,4 +167,29 @@ li:nth-child(odd) {
 .buttons_container button:hover {
   background-color: rgb(163, 39, 22);
   cursor: pointer;
+}
+
+.done{
+  color: rgb(23, 161, 23);
+  text-decoration: line-through
+}
+
+.modal-content{
+  display: flex;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(201, 48, 27);
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 60%;
+  justify-content: center;
+  z-index: 10;
+}
+
+.modal{
+  display: none;
 }
