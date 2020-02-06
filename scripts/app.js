@@ -1,5 +1,5 @@
 // Tutaj dodacie zmienne globalne do przechowywania elementów takich jak np. lista czy input do wpisywania nowego todo
-let $list, $input, $addBtn, $removeBtn, $editBtn
+let $list, $input, $addBtn, $removeBtn, $editBtn, $doneBtn
 const initialList = ['Dzisiaj robię usuwanie', 'Nakarm psa'];
 
 function main() {
@@ -22,6 +22,7 @@ function prepareDOMElements() {
   $list = document.getElementById('list');
   $input = document.querySelector('.new_element_form__input').value
   $addBtn = document.querySelector('.add_button')
+  $doneBtn = document.querySelector('.done_button')
 }
 
 function prepareDOMEvents() {
@@ -43,9 +44,9 @@ function addNewElementToList(title   /* Title, author, id */) {
   const newElement = createElement(title);
 
   newElement.innerHTML = `<span class="buttons_container">
-  <button>Remove</button>
-  <button>Edit</button>
-  <button>Done</button>
+  <button class='remove'>Remove</button>
+  <button class='edit'>Edit</button>
+  <button class="done_button">Done</button>
   </span>${title}`
 
   $list.appendChild(newElement);
@@ -64,28 +65,28 @@ function createElement(title /* Title, author, id */) {
 
 function addTask(e){
   e.preventDefault()
-  const id = IdGenerator();
   let newTask = document.getElementsByClassName("new_element_form__input")[0]
     .value;
-  // const ul = document.getElementById("list");
-  // const li = document.createElement("li");
-  // li.innerHTML = `<span class="buttons_container">
-  // <button>Remove</button>
-  // <button>Edit</button>
-  // <button>Done</button>
-  // </span>`
-  // li.setAttribute("id", id);
-  // li.appendChild(document.createTextNode(newTask));
-  // ul.appendChild(li);
   initialList.push(newTask)
   document.getElementsByClassName("new_element_form__input")[0].value = "";
   addNewElementToList(newTask)
 }
 
-function listClickManager(/* event- event.target */) {
+function listClickManager(event) {
+  // console.log(event.target.parentElement.id)
   // Rozstrzygnięcie co dokładnie zostało kliknięte i wywołanie odpowiedniej funkcji
   // event.target.parentElement.id
   // if (event.target.className === 'edit') { editListElement(id) }
+  if(event.target.className === 'edit'){
+    console.log(event.target.parentElement.parentElement.id)
+  }else if (event.target.className === 'remove'){
+    // console.log(event.target.parentElement.parentElement.id)
+    // console.log(initialList.pop(event.target.parentElement.parentElement.id))
+    // console.log(initialList)
+    remove_el = document.getElementById(event.target.parentElement.parentElement.id)
+    console.log(remove_el)
+    $list.removeChild(remove_el)
+  }
 }
 
 function openPopup() {
@@ -175,3 +176,13 @@ document.addEventListener('DOMContentLoaded', main);
 // const addBtn = document
 //   .getElementsByClassName("add_button")[0]
 //   .addEventListener("click", AddTask);
+
+
+
+
+
+// newElement.innerHTML = `<span class="buttons_container">
+//   <button>Remove</button>
+//   <button class='edit'>Edit</button>
+//   <button class="done_button">Done</button>
+//   </span>${title}`
