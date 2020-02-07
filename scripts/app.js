@@ -35,9 +35,9 @@ function prepareInitialList() {
   initialList = fetch('http://195.181.210.249:3000/todo/').then((res) => {
   return res.json();
 }).then((data) => {
-  data.map(el => {
+    data.map(el => {
     addNewElementToList(el)
-  })
+    })
   })
 }
 
@@ -62,8 +62,8 @@ function createElement(title) {
   return newElement;
 }
 
-function addTask(e){
-  e.preventDefault()
+function addTask(event){
+  event.preventDefault()
   let newTask = document.getElementsByClassName("new_element_form__input")[0]
     .value;
 
@@ -71,7 +71,7 @@ function addTask(e){
     alert('Nie wygłupiaj się, przecież musisz coś zrobić...')
   }else {
     document.getElementsByClassName("new_element_form__input")[0].value = "";
-  addNewElementToList({title: newTask})
+    addNewElementToList({title: newTask})
     const testData = {title: newTask}
 
     fetch('http://195.181.210.249:3000/todo/', {
@@ -93,7 +93,6 @@ function addTask(e){
 
 async function listClickManager(event) {
   if(event.target.className === 'done_btn'){
-    list_element = event.target.parentElement.parentElement
     edit_el = document.getElementById(event.target.parentElement.parentElement.id)
     edit_el.classList.toggle('done')
   }else if (event.target.className === 'remove_btn'){
@@ -116,7 +115,6 @@ async function listClickManager(event) {
 }
 
 function openPopup() {
-  edit_el = document.querySelector(event.target.parentElement.parentElement.id)
   modal = document.getElementById('modalId')
   modal.classList.remove('modal')
   modal.classList.add('modal-content')
@@ -137,9 +135,7 @@ async function updateList(event){
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(updatedTask)
-  }).then((res) => {
-  return res.json()
-}).then(() => {
+  }).then(() => {
   window.location.reload(true);
 })
 }
