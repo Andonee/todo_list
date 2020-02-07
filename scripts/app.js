@@ -1,4 +1,4 @@
-let $list, $input, $addBtn, $doneBtn, $modalCancel, $currentValue, $ID,  $elementID
+let $list, $input, $addBtn, $doneBtn, $modalCancel, $currentValue, $ID, $elementID
 
 function main() {
   prepareDOMElements();
@@ -67,8 +67,6 @@ function addTask(e){
   let newTask = document.getElementsByClassName("new_element_form__input")[0]
     .value;
 
-
-
   if(newTask.trim() === ''){
     alert('Nie wygłupiaj się, przecież musisz coś zrobić...')
   }else {
@@ -91,8 +89,6 @@ function addTask(e){
     })})
     updateList()
   }
-
-
 }
 
 async function listClickManager(event) {
@@ -146,14 +142,12 @@ async function updateList(event){
 }).then(() => {
   window.location.reload(true);
 })
-
 }
+
 function closePopup() {
     modal = document.getElementById('modalId')
     modal.classList.add('modal')
     modal.classList.remove('modal-content')
-
-
 }
 
 window.addEventListener('keydown', event => {
