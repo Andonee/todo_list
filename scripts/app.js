@@ -1,22 +1,4 @@
-// const myList = document.querySelector('ul');
-
-// const initialList = fetch('http://195.181.210.249:3000/todo/').then((res) => {
-//   return res.json();
-// }).then((data) => {
-//   data.map(el => {
-//     console.log(el)
-//   })
-//   }
-// )
-
-
-
-
-
-// const list = [fetchedData]
-
-let $list, $input, $addBtn, $removeBtn, $editBtn, $doneBtn, $modalCancel, $newValue, $currentValue
-// const initialList = ['Dzisiaj robię usuwanie', 'Nakarm psa'];
+let $list, $input, $addBtn, $removeBtn, $editBtn, $doneBtn, $modalCancel, $newValue, $currentValue, $ID,  $elementID
 
 function main() {
   prepareDOMElements();
@@ -46,35 +28,30 @@ function prepareDOMEvents() {
   $list.addEventListener('click', listClickManager);
   $addBtn.addEventListener('click', addTask)
   $modalCancel.addEventListener('click', closePopup)
-  $modalOk.addEventListener('click', render)
+  $modalOk.addEventListener('click', updateList)
 }
 
 function prepareInitialList() {
-  // initialList.forEach(todo => {
-  //   addNewElementToList(todo);
-  // });
   initialList = fetch('http://195.181.210.249:3000/todo/').then((res) => {
   return res.json();
 }).then((data) => {
   data.map(el => {
     addNewElementToList(el)
   })
-  }
-)
+  })
 }
+
 function addNewElementToList(title) {
   const newElement = createElement(title.title);
 
   newElement.innerHTML = `<span class="buttons_container">
-  <button class='remove_btn' data-id=${title.id}>Remove</button>
+  <button class='remove_btn' dataID=${title.id}>Remove</button>
   <button class='edit_btn'>Edit</button>
   <button class="done_btn">Done</button>
   </span>${title.title}`
 
   $list.appendChild(newElement);
-
 }
-
 
 function createElement(title) {
   const id = IdGenerator();
@@ -89,25 +66,33 @@ function addTask(e){
   e.preventDefault()
   let newTask = document.getElementsByClassName("new_element_form__input")[0]
     .value;
-  // initialList.push(newTask)
-  document.getElementsByClassName("new_element_form__input")[0].value = "";
+
+
+
+  if(newTask.trim() === ''){
+    alert('Nie wygłupiaj się, przecież musisz coś zrobić...')
+  }else {
+    document.getElementsByClassName("new_element_form__input")[0].value = "";
   addNewElementToList({title: newTask})
+    const testData = {title: newTask}
 
-  const testData = {title: newTask}
+    fetch('http://195.181.210.249:3000/todo/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(testData)
+    }).then((res) => {
+      res.json()
+    .then((data) => {
+      console.log('Success:', data)
+    }).catch((err) => {
+      console.log('Error:', err)
+    })})
+    updateList()
+  }
 
-  fetch('http://195.181.210.249:3000/todo/', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(testData)
-  }).then((res) => {
-    res.json()
-  .then((data) => {
-    console.log('Success:', data)
-  }).catch((err) => {
-    console.log('Error:', err)
-  })})
+
 }
 
 async function listClickManager(event) {
@@ -119,28 +104,18 @@ async function listClickManager(event) {
     remove_el = document.getElementById(event.target.parentElement.parentElement.id)
     $list.removeChild(remove_el)
 
-    const ID = event.target.getAttribute("data-id")
+    $ID = event.target.getAttribute("dataID")
 
-
-    fetch('http://195.181.210.249:3000/todo/' + ID, {
+    await fetch('http://195.181.210.249:3000/todo/' + $ID, {
       method: 'DELETE',
     }).then((res) => {
       res.json()
     }).then((res) => {
       console.log(res)
     })
-    // console.log(event.target.getAttribute("data-id"))
-    // const ID = await fetch('http://195.181.210.249:3000/todo/').then((res) => {
-    //   return res.json();
-    // }).then((data) => {
-    //   // console.log(data)
-    //   })
-
-
 
   }else if(event.target.className === 'edit_btn'){
     openPopup()
-
   }
 }
 
@@ -153,29 +128,41 @@ function openPopup() {
   currentValue = event.target.parentElement.parentElement.childNodes[1].nodeValue
 
   document.getElementById('modal_input').value = currentValue
+
+  $elementID = event.target.previousElementSibling.getAttribute('dataid')
 }
 
-function render(){
-  const data = {title: 'TEst'}
-  const ID = event.target.getAttribute("data-id")
-  fetch('http://195.181.210.249:3000/todo/' + ID, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data, ID),
-    }).then((res) => {
-      res.json()
-    }).then((res) => {
-      console.log(res)
-    })
-  console.log(ID)
-}
+async function updateList(event){
+  const modal_input = document.getElementById('modal_input').value
+  const updatedTask = {title: modal_input}
+  await fetch('http://195.181.210.249:3000/todo/' + $elementID, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(updatedTask)
+  }).then((res) => {
+  return res.json()
+}).then(() => {
+  window.location.reload(true);
+})
 
+}
 function closePopup() {
     modal = document.getElementById('modalId')
     modal.classList.add('modal')
     modal.classList.remove('modal-content')
+
+
 }
+
+window.addEventListener('keydown', event => {
+  if(event.keyCode ===13){
+    updateList()
+    closePopup()
+  }else if(event.keyCode === 27){
+    closePopup()
+  }
+})
 
 document.addEventListener('DOMContentLoaded', main);
