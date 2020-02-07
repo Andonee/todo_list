@@ -9,7 +9,5 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {},
-  "dependencies": {
-    "axios": "^0.19.2"
-  }
+  "dependencies": {}
 }

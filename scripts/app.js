@@ -1,4 +1,4 @@
-let $list, $input, $addBtn, $removeBtn, $editBtn, $doneBtn, $modalCancel, $newValue, $currentValue, $ID,  $elementID
+let $list, $input, $addBtn, $doneBtn, $modalCancel, $currentValue, $ID,  $elementID
 
 function main() {
   prepareDOMElements();
