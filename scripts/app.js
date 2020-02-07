@@ -122,7 +122,7 @@ async function listClickManager(event) {
     const ID = event.target.getAttribute("data-id")
 
 
-    await fetch('http://195.181.210.249:3000/todo/' + ID, {
+    fetch('http://195.181.210.249:3000/todo/' + ID, {
       method: 'DELETE',
     }).then((res) => {
       res.json()
@@ -155,10 +155,10 @@ function openPopup() {
   document.getElementById('modal_input').value = currentValue
 }
 
-async function render(){
+function render(){
   const data = {title: 'TEst'}
   const ID = event.target.getAttribute("data-id")
-  await fetch('http://195.181.210.249:3000/todo/' + ID, {
+  fetch('http://195.181.210.249:3000/todo/' + ID, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
