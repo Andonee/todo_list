@@ -169,12 +169,11 @@ li:nth-child(odd) {
   cursor: pointer;
 }
 
-.done{
-  color: rgb(23, 161, 23);
-  text-decoration: line-through
+.done {
+  color: rgb(163, 39, 22);
 }
 
-.modal-content{
+.modal-content {
   display: flex;
   position: fixed;
   top: 50%;
@@ -190,6 +189,6 @@ li:nth-child(odd) {
   z-index: 2;
 }
 
-.modal{
+.modal {
   display: none;
 }
